@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class CharacterMover : MonoBehaviour
 {
@@ -13,26 +10,33 @@ public class CharacterMover : MonoBehaviour
     public CircleCollider2D circleCol;
     public GameObject player;
 
-    public Image beatMarker;
-    public Sprite downButton;
-    public Sprite defaultButton;
-
+    SpriteRenderer s_renderer;
     // Start is called before the first frame update
     void Start()
     {
+        s_renderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(canBePressed)
+        {
+            s_renderer.color = Color.green;
+        }
+        else
+        {
+            s_renderer.color = Color.red;
+        }
+
         if (Input.GetKeyDown(keyToPress))
         {
-            if (canBePressed && Mathf.Abs(circleCol.offset.x) > 0)
+            if (canBePressed && Mathf.Abs(transform.localPosition.x) > 0)
             {
                 MovePositionX();
 
             }
-            else if (canBePressed && Mathf.Abs(circleCol.offset.y) > 0)
+            else if (canBePressed && Mathf.Abs(transform.localPosition.y) > 0)
             {
                 MovePositionY();
 
@@ -40,22 +44,11 @@ public class CharacterMover : MonoBehaviour
             
         }
 
-        if (beatMarker != null)
-        {
-            if (canBePressed)
-            {
-                beatMarker.sprite = downButton;
-            }
-            else
-            {
-                beatMarker.sprite = defaultButton;
-            }
-        }
     }
 
     void MovePositionX()
     {
-        if (circleCol.offset.x > 0)
+        if (transform.localPosition.x > 0)
         {
             player.transform.position += new Vector3(1, 0, 0);
             move = true;
@@ -68,7 +61,7 @@ public class CharacterMover : MonoBehaviour
     }
     void MovePositionY()
     {
-        if (circleCol.offset.y > 0)
+        if (transform.localPosition.y > 0)
         {
             player.transform.position += new Vector3(0, 1, 0);
             move = true;
